@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import WebFont from 'webfontloader';
 import RegisterButton from './RegisterButton';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { signUp } from "../../Actions/auth";
 
 
@@ -19,7 +19,6 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
         });
     }, []);
 
-    const { type } = useParams();
     const [formData, setFormData] = useState(initialFormData);
     const [isPasswordConfirm, setIsPasswordConfirm] = useState(true);
     const history = useHistory();
@@ -41,7 +40,7 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                 email: formData.email,
                 password: formData.password
             }
-            dispatch(signUp(newFormData));
+            dispatch(signUp(newFormData, history));
             // console.log(newFormData);
         }
 
@@ -133,6 +132,7 @@ const NameInput = styled.div`
 
 const RegisterBox = styled.div`
     /* height: 90%; */
+    margin-bottom: 30px;
     width: 45%;
     border-radius: 20px;
     padding: 20px;

@@ -7,16 +7,18 @@ const User = mongoose.model("users");
 const logIn = async (req, res) => {
     //..
     const { email, password } = req.body;
+    // console.log("In login");
     try
     {
-        const existingUser = User.findOne({ email });
+        const existingUser = await User.findOne({ email });
+        console.log(`login existing user: ${JSON.stringify(existingUser)}`)
         if (!existingUser) return res.status(404).json({ message: "No user with this email" })
 
         const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid password." });
 
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jetSecretKey, { expiresIn: "1h" });
-        res.status(200).json({ newUser: existingUser, token })
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwtSecretKey, { expiresIn: "1h" });
+        res.status(200).json({ newUser: existingUser, token, message: "log in successful" })
     } catch (e)
     {
         console.log(e.message);
@@ -28,7 +30,7 @@ const signUp = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
     try
     {
-        const existingUser = User.findOne({ email });
+        const existingUser = await User.findOne({ email });
         if (existingUser)
         {
             console.log("existing user \n\n");

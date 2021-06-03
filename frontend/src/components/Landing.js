@@ -17,7 +17,7 @@ const Landing = () => {
 
     return (
         <Container className="contianer">
-            <Navbar bgColor="transparent" />
+            <Navbar bgColor="transparent" hoverColor="#ffe9ab"/>
             <Left>
                 <Content>
                     <Title>

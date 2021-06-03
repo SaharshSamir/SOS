@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components"
 import WebFont from 'webfontloader';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { logOut } from "../Actions/auth";
+import { useDispatch } from 'react-redux';
+import decode from "jwt-decode";
 
 
-const Navbar = ({ bgColor }) => {
+const Navbar = (props) => {
     const history = useHistory();
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
     useEffect(() => {
         WebFont.load({
             google: {
@@ -13,16 +19,64 @@ const Navbar = ({ bgColor }) => {
             }
         });
     }, []);
+
+    useEffect(() => {
+        const token = user ? user.token : null
+
+        if (token)
+        {
+            const decodedToken = decode(token);
+
+            if (decodedToken.exp * 1000 < new Date().getTime()) logOut(dispatch);
+        }
+    }, [location])
+
+
+    const handleLogOut = () => {
+        setUser(null);
+        logOut(dispatch);
+    }
+
+
+
+    const renderNavItems = () => {
+        if (user)
+        {
+            return user.newUser ?
+                (
+                    <NavItems>
+                        <NavItem hoverColor={props.hoverColor}>{user.newUser.firstName} {user.newUser.lastName}</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={handleLogOut}>Log Out</NavItem>
+                    </NavItems>
+                )
+                :
+                (
+                    <NavItems>
+                        <NavItem hoverColor={props.hoverColor}>About</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/signUp")}>Sign Up</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/logIn")}>Log In</NavItem>
+                    </NavItems>
+                )
+        }
+        else
+        {
+            return (
+                <NavItems>
+                    <NavItem hoverColor={props.hoverColor}>About</NavItem>
+                    <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/signUp")}>Sign Up</NavItem>
+                    <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/logIn")}>Log In</NavItem>
+                </NavItems>
+            )
+        }
+    }
+
     return (
-        <Container bgColor={bgColor}>
-            <Logo>
+        <Container bgColor={props.bgColor}>
+            <Logo onClick={() => history.push("/")}>
                 <p>SOS</p>
             </Logo>
-            <NavItems>
-                <NavItem>About</NavItem>
-                <NavItem onClick={() => history.push("/register")}>Sign Up</NavItem>
-                <NavItem>Log In</NavItem>
-            </NavItems>
+
+            {renderNavItems()}
         </Container>
     )
 }
@@ -44,7 +98,7 @@ const NavItem = styled.li`
     border-radius: 5px;
     &:hover {
         cursor: pointer;
-        background-color: #e8e8e8;
+        background-color: ${props => props.hoverColor};
     }
 
 `

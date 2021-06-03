@@ -1,10 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import WebFont from 'webfontloader';
 import RegisterButton from './RegisterButton';
+import { useDispatch } from "react-redux";
+import { logIn } from "../../Actions/auth";
+import {useHistory} from "react-router-dom";
+
+const initialFormData = { email: "", password: "" };
 
 const LoginForm = ({ isSignup, toggleRegisteration }) => {
+    const dispatch = useDispatch();
+    const [formData, setFormData] = useState(initialFormData);
+    const history = useHistory();
     useEffect(() => {
         WebFont.load({
             google: {
@@ -12,44 +20,48 @@ const LoginForm = ({ isSignup, toggleRegisteration }) => {
             }
         });
     }, []);
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        // console.log()
+        dispatch(logIn(formData, history));
+        // console.log(formData);
+    }
+
+
+    const handleChange = (e) => {
+        const obj = { ...formData, [e.target.name]: e.target.value }
+        setFormData(obj);
+
+    }
+
     return (
         <RegisterBox>
             <Heading>
                 <h1>Log In</h1>
             </Heading>
-            <form>
-                {/* <NameInput>
-                    <TextField
-                        label="First Name"
-                        placeholder="Elon"
-                        variant="outlined"
-                        size="small"
-                        style={{ margin: "20px" }}
-                    />
-                    <TextField
-                        label="Last Name"
-                        placeholder="Musk"
-                        variant="outlined"
-                        size="small"
-                        style={{ margin: "20px" }}
-                    />
-                </NameInput> */}
+            <form onSubmit={handleSubmit}>
                 <TextField
                     label="email"
                     placeholder="elon@musk.com"
                     variant="outlined"
                     size="small"
+                    name="email"
                     style={{ margin: "10px" }}
+                    onChange={handleChange}
                 />
                 <TextField
                     label="Password"
                     placeholder="iLoveMars123"
                     variant="outlined"
                     size="small"
+                    type="password"
+                    name="password"
                     style={{ margin: "10px" }}
+                    onChange={handleChange}
                 />
 
-                <RegisterButton isSignup={false} />
+                <RegisterButton isSignup={false} type="submit" />
             </form>
             <p>Dont't have an account? <a onClick={() => toggleRegisteration(isSignup)}>Sign Up.</a></p>
         </RegisterBox>
@@ -71,6 +83,7 @@ const NameInput = styled.div`
 
 const RegisterBox = styled.div`
     /* height: 90%; */
+    margin-bottom: 150px;
     width: 45%;
     border-radius: 20px;
     padding: 20px;

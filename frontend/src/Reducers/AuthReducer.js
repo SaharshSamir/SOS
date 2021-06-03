@@ -1,4 +1,4 @@
-import { AUTH } from "../Actions/types";
+import { AUTH, LOGOUT } from "../Actions/types";
 
 const defaultState = {
     authData: null
@@ -16,7 +16,12 @@ export default (store = defaultState, action) => {
             }
             return { ...store, authData: action.payload }
 
+        case LOGOUT:
+            localStorage.clear();
+
+            return { ...store, authData: null };
+
         default:
-            return { ...store, authData: null }
+            return { ...store, authData: null };
     }
 }

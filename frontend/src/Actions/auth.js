@@ -1,13 +1,39 @@
-import { AUTH } from './types';
+import { AUTH, LOGOUT } from './types';
 import axios from 'axios';
 
 
-export const signUp = (formData) => {
+export const signUp = (formData, router) => {
     return async dispatch => {
-        const res = await axios.post("http://localhost:5000/auth/signUp", formData);
+        try
+        {
 
-        dispatch({ type: AUTH, payload: res.data });
+            const res = await axios.post("http://localhost:5000/auth/signUp", formData);
+            router.push("/timeline");
+            dispatch({ type: AUTH, payload: res.data });
 
-        console.log(`from auth action, ${res.data}`);
+            console.log(`from auth action, ${res.data}`);
+        } catch (error)
+        {
+            console.log(error.message);
+        }
     }
+}
+
+export const logIn = (formData, router) => {
+    return async dispatch => {
+        try
+        {
+
+            const res = await axios.post("http://localhost:5000/auth/logIn", formData);
+            router.push("/timeline");
+            dispatch({ type: AUTH, payload: res.data });
+        } catch (error)
+        {
+            console.log(error.message);
+        }
+    }
+}
+
+export const logOut = (dispatch) => {
+    dispatch({ type: LOGOUT });
 }
