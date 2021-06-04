@@ -28,12 +28,14 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 
 app.use("/auth", authRoutes);
 
-
-if(process.NODE_ENV === "production"){
+console.log("Node env ---> " + process.env.NODE_ENV)
+if(process.env.NODE_ENV === "production"){
     app.use(express.static("frontend/build"));
 
+    console.log("inside if statement line 35");
+
     const path = require("path");
-    app.get("*", (req, res) => {
+    app.get('*', (req, res) => {
         console.log("in * route handler");
         console.log("2nd console log" + path.resolve(__dirname, 'frontend', 'build', 'index.html'));
         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
