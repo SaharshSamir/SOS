@@ -11,11 +11,6 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 console.log("hi");
 
-app.use(cors());
-app.use(bodyParser.json({ limit: '30mb', extended: true }));
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-
-
 mongoose.connect(keys.MongoURI, {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -26,11 +21,27 @@ mongoose.connect(keys.MongoURI, {
     console.log(e);
 })
 
+app.use(cors());
+app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+
+app.use("/auth", authRoutes);
+
 app.get("/", (req, res) => {
     console.log(req);
     res.send("HIII");
 })
-app.use("/auth", authRoutes);
+
+if(process.NODE_ENV === "production"){
+    app.use(express.static("frontend//build"));
+
+    const path = require("path");
+    app.get("*", (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'frontent', 'build', 'index.html'));
+    });
+}
+
+
 
 app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
