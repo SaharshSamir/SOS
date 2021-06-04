@@ -27,10 +27,6 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 
 app.use("/auth", authRoutes);
 
-app.get("/", (req, res) => {
-    console.log(req);
-    res.send("HIII");
-})
 
 if(process.NODE_ENV === "production"){
     app.use(express.static("frontend//build"));
