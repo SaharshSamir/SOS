@@ -19,7 +19,7 @@ mongoose.connect(keys.MongoURI, {
     console.log("connected to mongo");
 }).catch(e => {
     console.log(e);
-    console.log("Mongo uri:    " + keys.keys.MongoURI);
+    console.log("Mongo uri:    " + keys.MongoURI);
 })
 
 app.use(cors());
