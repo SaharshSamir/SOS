@@ -1,3 +1,6 @@
 
-/backend/node_modules
+node_modules
+config/development.js
+# dev.*
+# dev.js
 /frontend/node_modules
