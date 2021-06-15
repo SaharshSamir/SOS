@@ -7,7 +7,7 @@ export const signUp = (formData, router) => {
         try
         {
 
-            const res = await axios.post("http://localhost:5000/auth/signUp", formData);
+            const res = await axios.post("/auth/signUp", formData);
             router.push("/timeline");
             dispatch({ type: AUTH, payload: res.data });
 
@@ -29,7 +29,7 @@ export const logIn = (formData, router) => {
         try
         {
 
-            const res = await axios.post("http://localhost:5000/auth/logIn", formData);
+            const res = await axios.post("/auth/logIn", formData);
             router.push("/timeline");
             dispatch({ type: AUTH, payload: res.data });
         } catch (error)
