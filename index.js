@@ -31,12 +31,15 @@ app.use("/auth", authRoutes);
 app.use("/api", postRoutes);
 
 
-if (process.NODE_ENV === "production")
+if (process.env.NODE_ENV === "production")
 {
+    console.log(process.env.NODE_ENV);
+    console.log("inside if statement in index.js line 36");
     app.use(express.static("frontend/build"));
 
     const path = require("path");
     app.get("*", (req, res) => {
+        console.log("inside get request to / ");
         res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
     });
 }

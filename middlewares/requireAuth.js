@@ -16,13 +16,13 @@ module.exports = (req, res, next) => {
             decodedToken = jwt.verify(token, keys.jwtSecretKey);
             // console.log("decoded token is: " + JSON.stringify(decodedToken));
             req.userId = decodedToken.id;
-            next();
 
         } else
         {
             res.status(404).json({ message: "You must be logged in." });
             return;
         }
+        next();
     } catch (e)
     {
         console.log(e.message);
