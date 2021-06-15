@@ -26,6 +26,8 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
 
     const handelSubmit = (e) => {
         e.preventDefault();
+        formData.firstName = formData.firstName.toLowerCase();
+        formData.lastName = formData.lastName.toLowerCase();
         if (formData.confirmPassword !== formData.password)
         {
             setIsPasswordConfirm(false);
@@ -35,13 +37,12 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
         {
             setIsPasswordConfirm(true);
             const newFormData = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
+                firstName: formData.firstName.charAt(0).toUpperCase() + formData.firstName.slice(1),
+                lastName: formData.lastName.charAt(0).toUpperCase() + formData.lastName.slice(1),
                 email: formData.email,
                 password: formData.password
             }
             dispatch(signUp(newFormData, history));
-            // console.log(newFormData);
         }
 
     }
