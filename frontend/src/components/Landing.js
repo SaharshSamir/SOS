@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import styled from "styled-components";
 import WebFont from 'webfontloader';
 import Drawing from "../assets/Illustration.svg"
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 const Landing = () => {
@@ -18,7 +18,7 @@ const Landing = () => {
 
     return (
         <Container className="contianer">
-            <Navbar bgColor="transparent" hoverColor="#ffe9ab"/>
+            <Navbar bgColor="transparent" hoverColor="#ffe9ab" />
             <Left>
                 <Content>
                     <Title>

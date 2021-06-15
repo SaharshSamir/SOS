@@ -8,7 +8,6 @@ import decode from "jwt-decode";
 
 
 const Navbar = (props) => {
-
     const history = useHistory();
     const dispatch = useDispatch();
     const location = useLocation();
