@@ -14,10 +14,10 @@ const upload = async (req, res) => {
             _user: req.userId
         }).save();
 
-        const user = await User.find({_id: req.userId});
+        const user = await User.findById(req.userId);
         const newPost = {
             ...post._doc,
-            userName: user[0].firstName + ' ' + user[0].lastName
+            userName: user.firstName + ' ' + user.lastName
         }
 
         console.log("in controller");
@@ -56,6 +56,7 @@ const likePost = async (req, res) => {
     try
     {
         const post = await Post.findById(postId);
+        const postUser = await User.findById(post._user);
 
         //something
         if (!post.likes.includes(userName))
@@ -66,11 +67,16 @@ const likePost = async (req, res) => {
             post.likes.splice(post.likes.indexOf(userName), 1);
         }
 
-        const newPost = await Post.findOneAndUpdate(
+        let newPost = await Post.findOneAndUpdate(
             { _id: postId },
             post,
             { new: true }
         );
+
+        newPost = {
+            ...newPost,
+            userName: postUser.firstName + ' ' + postUser.lastName
+        }
 
         res.status(201).send(newPost);
     } catch (e)

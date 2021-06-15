@@ -6,5 +6,6 @@ const requireAuth = require("../middlewares/requireAuth");
 
 router.post("/upload", requireAuth, upload);
 router.get("/timeline/posts", timelinePosts);
-router.post("/post/like", likePost);
+router.post("/post/like", requireAuth, likePost);
+
 module.exports = router;
