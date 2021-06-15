@@ -82,6 +82,12 @@ const allUsers = async (req, res) => {
     }
 }
 
+
+const fetchUser = async (req, res) => {
+
+}
+
+exports.fetchUser = fetchUser;
 exports.logIn = logIn;
 exports.signUp = signUp;
 exports.allUsers = allUsers;

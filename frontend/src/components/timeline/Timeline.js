@@ -1,28 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
 import Navbar from '../Navbar';
 import NewPost from './NewPost';
 import PostsList from "./PostsList";
 import { useDispatch } from 'react-redux';
 import { fetchPosts } from "../../Actions/post";
+import { connect } from "react-redux";
 
 
 
 
-const Timeline = () => {
+
+const Timeline = (props) => {
     const dispatch = useDispatch();
-    useEffect(() => {
 
+    const [user, setUser] = useState({})
+    useEffect(() => {
         dispatch(fetchPosts());
-    })
-    // const [posts, setPosts] = useState(props.posts);
+    }, [])
+
+    useEffect(() => {
+        setUser(props.authData);
+    }, [props]);
 
     return (
         <Container>
             <Nav className="navv">
                 <Navbar bgColor="#D5F3C4" hoverColor="#b8d1a9" />
             </Nav>
-            <NewPost />
+            {user ? (<NewPost />) : (<> </>)}
             <PostsList />
         </Container>
     )
@@ -31,8 +37,6 @@ const Timeline = () => {
 
 
 const Nav = styled.div`
-    /* position: relative; */
-    /* margin-bottom: 80px; */
     height: 10vh;
     width: 100%;
 `;
@@ -48,10 +52,12 @@ const Container = styled.div`
     /* align-items: center; */
     /* justify-content: center; */
     background-color: #f5f1ed;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 `;
 
 
+const mapStateToProps = ({ auth }) => {
+    return auth;
+}
 
-
-export default Timeline;
+export default connect(mapStateToProps)(Timeline);

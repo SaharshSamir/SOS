@@ -1,5 +1,7 @@
-import { FETCH_ALL } from "./types";
+import { FETCH_ALL, UPDATE_POST, UPLOAD_POST } from "./types";
 import axios from 'axios';
+import decode from "jwt-decode";
+
 
 if (localStorage.getItem('profile'))
 {
@@ -8,9 +10,8 @@ if (localStorage.getItem('profile'))
 
 export const upload = (formData) => {
     return async dispatch => {
-        console.log("in action creator")
         const res = await axios.post("/api/upload", formData);
-        console.log(res);
+        dispatch({ type: UPLOAD_POST, payload: res.data });
     }
 }
 
@@ -18,12 +19,24 @@ export const fetchPosts = () => {
     return async dispatch => {
         try
         {
-            const res = await axios.get("/api/timeline/posts", { timeout: 1000 })
-            console.log(res);
+            const res = await axios.get("/api/timeline/posts")
             dispatch({ type: FETCH_ALL, payload: res.data })
         } catch (error)
         {
             console.log(error.message);
+        }
+    }
+}
+
+export const likePost = (data) => {
+    return async dispatch => {
+        try
+        {
+            const res = await axios.post("/api/post/like", data);
+            dispatch({ type: UPDATE_POST, payload: res.data })
+        } catch (e)
+        {
+            console.log(e.message);
         }
     }
 }

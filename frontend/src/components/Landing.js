@@ -3,10 +3,11 @@ import Navbar from "./Navbar";
 import styled from "styled-components";
 import WebFont from 'webfontloader';
 import Drawing from "../assets/Illustration.svg"
+import {useHistory} from 'react-router-dom';
 
 
 const Landing = () => {
-
+    const history = useHistory();
     useEffect(() => {
         WebFont.load({
             google: {
@@ -26,7 +27,7 @@ const Landing = () => {
                     <SubTitle>
                         <p>A community committed to helping each other<br></br>during this pandemic</p>
                     </SubTitle>
-                    <ActionButton>
+                    <ActionButton onClick={() => history.push("/timeline")}>
                         Get Started
                     </ActionButton>
                 </Content>

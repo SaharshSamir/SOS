@@ -6,7 +6,7 @@ import { useDispatch, connect } from 'react-redux';
 
 
 const intialFormData = { title: "", description: "" }
-
+//something
 const NewPost = ({ authData }) => {
 
     const dispatch = useDispatch();

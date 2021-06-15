@@ -5,11 +5,12 @@ const postSchema = new Schema({
     title: { type: String, required: true },
     description: String,
     likes: {
-        type: Number,
-        default: 0
+        type: [String],
+        default: []
     },
     _user: { type: Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: new Date() }
 })
-
+//something
 mongoose.model("posts", postSchema);
+

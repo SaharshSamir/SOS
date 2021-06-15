@@ -8,7 +8,6 @@ import decode from "jwt-decode";
 
 
 const Navbar = (props) => {
-    const obj = JSON.stringify(props);
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -30,6 +29,8 @@ const Navbar = (props) => {
         setUser(null);
         logOut(dispatch);
     }
+
+
     useEffect(() => {
         setUser(JSON.parse(localStorage.getItem("profile")));
         const token = user ? user.token : null;
@@ -41,12 +42,6 @@ const Navbar = (props) => {
             if (decodedToken.exp * 1000 < new Date().getTime()) handleLogOut();
         }
     }, [location])
-
-
-
-
-
-
 
     const renderNavItems = () => {
         if (user)
@@ -134,8 +129,6 @@ const Container = styled.div`
 `
 
 
-const mapStateToProps = ({ auth }) => {
-    return auth
-}
 
-export default connect(mapStateToProps)(Navbar);
+
+export default Navbar;

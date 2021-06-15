@@ -1,12 +1,16 @@
-import { FETCH_ALL } from "../Actions/types";
+import { FETCH_ALL, UPDATE_POST, UPLOAD_POST } from "../Actions/types";
 
 export default (state = [], action) => {
     switch (action.type)
     {
         case FETCH_ALL:
-            console.log(action);
             return action.payload;
 
+        case UPLOAD_POST:
+            return [...state, action.payload.newPost];
+
+        case UPDATE_POST:
+            return state.map(post => post._id === action.payload._id ? action.payload : post);
         default:
             return state
     }

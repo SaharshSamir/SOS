@@ -1,86 +1,42 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { connect } from "react-redux";
-import WebFont from 'webfontloader';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Post from './Post';
+
+
 
 
 const PostsList = (props) => {
-    const [posts, setPosts] = useState(props.posts);
+    const [posts, setPosts] = useState([]);
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         setPosts(props.posts);
+        setUser(props.auth.authData);
     }, [props])
-
-    useEffect(() => {
-        WebFont.load({
-            google: {
-                families: ['Poppins']
-            }
-        });
-    }, [])
+    // console.log(props.auth);
 
     const renderPosts = () => {
 
-        return posts.map(post => {
+        return posts.map((post, postIdx) => {
+            console.log(post);
             return (
-                <Card>
-                    <CardHeader className="card-header">
-
-                        <AccountCircleIcon />
-                        <HeaderNameContainer>
-                            <Name className="name">{post.userName}</Name>
-                        </HeaderNameContainer>
-
-                    </CardHeader>
-                    <CardBody>
-                        {post.title}
-                    </CardBody>
-                </Card>
+                <Post post={post} key={postIdx} user={user} />
+                // <> </>
             )
         })
     }
 
     return (
-        <Container>
+        <Container className="container">
             {renderPosts()}
         </Container>
     )
 }
 
-const HeaderNameContainer = styled.div``
-const HeaderAvatarContainer = styled.div``
-
-const CardBody = styled.div`
-    width: 100%;
-    font-family: 'Poppins';
-`
-
-const Name = styled.p`
-    margin: 0;
-    font-size: 20px;
-    font-family: 'Poppins';
-    font-weight: bold;
-`
-
-const CardHeader = styled.div`
-    width: 100%;
-    display: flex;
-`
-
-const Card = styled.div`
-    margin-bottom: 30px;
-    width: 75%;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0px 11px 90px -10px #C0C0C0;
-    /* justify-content: center; */
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-`
 
 const Container = styled.div`
+    margin-top: 30px;
     height: 100%;
     width: 100%;
     display: flex;
@@ -89,9 +45,9 @@ const Container = styled.div`
     align-items: center;
 `
 
-const mapStateToProps = ({ posts }) => {
+const mapStateToProps = ({ posts, auth }) => {
 
-    return { posts }
+    return { posts, auth }
 
 }
 export default connect(mapStateToProps)(PostsList)

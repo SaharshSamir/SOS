@@ -1,10 +1,8 @@
 import { AUTH, LOGOUT, CHECK_USER } from "../Actions/types";
 
-const defaultState = {
-    authData: null
-}
 
-export default (state = defaultState, action) => {
+
+export default (state = {}, action) => {
     switch (action.type)
     {
         case AUTH:
@@ -22,13 +20,12 @@ export default (state = defaultState, action) => {
 
 
         case CHECK_USER:
-            if (action)
-            {
-                return { ...state, authData: action.payload }
-            }
+            console.log({ ...state, authData: action.payload })
+            return { ...state, authData: action.payload }
+
         // return {...state, authData: {}}
 
         default:
-            return { ...state, authData: null };
+            return { ...state };
     }
 }
