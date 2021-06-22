@@ -28,7 +28,7 @@ const logIn = async (req, res) => {
 }
 
 const signUp = async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, phoneNo, password } = req.body;
     try
     {
         const existingUser = await User.findOne({ email });
@@ -43,9 +43,9 @@ const signUp = async (req, res) => {
             email: email,
             firstName,
             lastName,
+            phoneNo,
             password: hashedPassword
         }).save();
-        console.log(`saved user: ${newUser}`);
         const token = jwt.sign({ email: newUser.email, id: newUser._id }, jwtSecretKey, { expiresIn: "1h" });
         res.status(201).json({ newUser, token });
     } catch (e)
@@ -55,39 +55,6 @@ const signUp = async (req, res) => {
     }
 }
 
-const allUsers = async (req, res) => {
-    var userss = [];
-    try
-    {
-        await User.find({}, (err, users) => {
-            if (err)
-            {
-                console.log(err);
-            } else
-            {
-                users.forEach((i) => {
-                    userss.push(i);
-                })
-                console.log(userss);
-                res.send(userss)
-            }
-            // userss = users.email;
-        })
-        // res.send("yay");
 
-    } catch (e)
-    {
-        console.log(e);
-        res.send("sorry");
-    }
-}
-
-
-const fetchUser = async (req, res) => {
-
-}
-
-exports.fetchUser = fetchUser;
 exports.logIn = logIn;
 exports.signUp = signUp;
-exports.allUsers = allUsers;

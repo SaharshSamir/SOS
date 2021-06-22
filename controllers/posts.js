@@ -3,18 +3,21 @@ const Post = mongoose.model("posts");
 const User = mongoose.model("users");
 
 const upload = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, contactInfo } = req.body;
 
     try
     {
         const post = await new Post({
             title,
             description,
+            contactInfo,
             createdAt: new Date(),
             _user: req.userId
         }).save();
 
         const user = await User.findById(req.userId);
+
+        //add usrname to the post
         const newPost = {
             ...post._doc,
             userName: user.firstName + ' ' + user.lastName
@@ -34,6 +37,8 @@ const timelinePosts = async (req, res) => {
     try
     {
         const posts = await Post.find({});
+
+        //add user the post belongs to, to the each post
         const getPosts = async () => {
             const newPosts = posts.map(async post => {
                 const user = await User.find({ _id: post._user })
@@ -55,10 +60,11 @@ const likePost = async (req, res) => {
     const { postId, userName } = req.body;
     try
     {
+        //get the post and the user that the post belongs to
         const post = await Post.findById(postId);
         const postUser = await User.findById(post._user);
 
-        //something
+        //if user has already liked the post then unlike the post and remove their username from likes array
         if (!post.likes.includes(userName))
         {
             post.likes = [...post.likes, userName];
@@ -67,12 +73,14 @@ const likePost = async (req, res) => {
             post.likes.splice(post.likes.indexOf(userName), 1);
         }
 
+
         let newPost = await Post.findOneAndUpdate(
             { _id: postId },
             post,
             { new: true }
         );
 
+        //add username to the post
         newPost = {
             ...newPost,
             userName: postUser.firstName + ' ' + postUser.lastName

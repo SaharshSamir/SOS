@@ -18,7 +18,9 @@ const Landing = () => {
 
     return (
         <Container className="contianer">
-            <Navbar bgColor="transparent" hoverColor="#ffe9ab" />
+            <Nav>
+                <Navbar bgColor="transparent" hoverColor="#ffe9ab" />
+            </Nav>
             <Left>
                 <Content>
                     <Title>
@@ -34,7 +36,7 @@ const Landing = () => {
             </Left>
             <Right>
                 <Illustration className="Illustration">
-                    <img src={Drawing} />
+                    <img src={Drawing} alt="fighting the virus"/>
                 </Illustration>
             </Right>
         </Container>
@@ -57,8 +59,13 @@ const ActionButton = styled.button`
     }
 `
 
+const Nav = styled.div`
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+`;
+
 const Illustration = styled.div`
-    /* background-color: black; */
     margin-top: 20px;
     img{
         height: 400px;

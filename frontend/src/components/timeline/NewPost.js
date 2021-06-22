@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import { upload } from '../../Actions/post';
 import { useDispatch, connect } from 'react-redux';
 
 
-const intialFormData = { title: "", description: "" }
-//something
+const intialFormData = { title: "", description: "", contactInfo: "" }
 const NewPost = ({ authData }) => {
 
     const dispatch = useDispatch();
     const [formData, setFormData] = useState(intialFormData);
+    const [isErrorTitle, setIsErrorTitle] = useState(false);
+    const [isErrorContact, setIsErrorContact] = useState(false);
     const handleChange = e => {
 
         const obj = { ...formData, [e.target.name]: e.target.value }
@@ -19,9 +20,17 @@ const NewPost = ({ authData }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        setFormData(intialFormData);
-        e.target.reset();
-        dispatch(upload(formData));
+
+        if (!formData.title || !formData.contactInfo)
+        {
+            setIsErrorTitle((!formData.title) ? true : false);
+            setIsErrorContact((!formData.contactInfo) ? true : false);
+        } else
+        {
+            setFormData(intialFormData);
+            e.target.reset();
+            dispatch(upload(formData));
+        }
     }
     const renderForm = () => {
         return (
@@ -32,6 +41,8 @@ const NewPost = ({ authData }) => {
                     variant="outlined"
                     name="title"
                     fullWidth
+                    error={isErrorTitle}
+                    helperText={(isErrorTitle) ? "Required" : ""}
                     onChange={handleChange}
                     style={{ margin: "10px" }}
                 />
@@ -43,6 +54,17 @@ const NewPost = ({ authData }) => {
                     fullWidth
                     multiline
                     rows={5}
+                    style={{ margin: "10px" }}
+                />
+                <TextField
+                    placeholder="How to contact you?"
+                    label="Contact info"
+                    variant="outlined"
+                    name="contactInfo"
+                    fullWidth
+                    error={isErrorContact}
+                    helperText={(isErrorContact) ? "Required" : ""}
+                    onChange={handleChange}
                     style={{ margin: "10px" }}
                 />
                 <ButtonDiv>
@@ -83,37 +105,25 @@ const PostButton = styled.button`
 const FormContainer = styled.form`
     width: 100%;
     height: fit-content;
-    /* margin-top: 100px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-self: flex-end;
     display: flex;
     padding: 20px 150px;
-    /* position: absolute; */
-    /* background-color: pink; */
-    /* div{
-        margin: 10px;
-    } */
 `;
 
 const Container = styled.div`
     padding: 0;
     margin: 0;
-    /* margin-bottom: 30px; */
-    /* height: 100vh; */
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
     background-color: #f5f1ed;
-    /* overflow-y: scroll; */
 `;
 
 
 function mapStateToProps({ auth }) {
-    // console.log(state)
     return auth;
 }
 

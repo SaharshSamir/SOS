@@ -7,6 +7,7 @@ require("./models/User");
 require("./models/Post");
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
+const profileRoutes = require("./routes/profile");
 
 mongoose.Promise = global.Promise;
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,7 @@ app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/api", postRoutes);
+app.use("/profile", profileRoutes);
 
 
 if (process.env.NODE_ENV === "production")

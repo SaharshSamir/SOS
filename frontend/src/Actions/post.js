@@ -1,6 +1,5 @@
 import { FETCH_ALL, UPDATE_POST, UPLOAD_POST } from "./types";
 import axios from 'axios';
-import decode from "jwt-decode";
 
 
 if (localStorage.getItem('profile'))

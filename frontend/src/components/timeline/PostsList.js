@@ -12,14 +12,12 @@ const PostsList = (props) => {
 
     useEffect(() => {
         setPosts(props.posts);
-        setUser(props.auth.authData);
+        setUser(props.auth?.authData?.newUser);
     }, [props])
-    // console.log(props.auth);
 
     const renderPosts = () => {
 
         return posts.map((post, postIdx) => {
-            console.log(post);
             return (
                 <Post post={post} key={postIdx} user={user} />
                 // <> </>

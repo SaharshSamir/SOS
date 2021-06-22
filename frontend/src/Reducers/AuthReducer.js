@@ -20,7 +20,6 @@ export default (state = {}, action) => {
 
 
         case CHECK_USER:
-            console.log({ ...state, authData: action.payload })
             return { ...state, authData: action.payload }
 
         // return {...state, authData: {}}

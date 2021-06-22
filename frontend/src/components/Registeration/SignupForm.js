@@ -40,6 +40,7 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                 firstName: formData.firstName.charAt(0).toUpperCase() + formData.firstName.slice(1),
                 lastName: formData.lastName.charAt(0).toUpperCase() + formData.lastName.slice(1),
                 email: formData.email,
+                phoneNo: formData.phoneNo,
                 password: formData.password
             }
             dispatch(signUp(newFormData, history));
@@ -47,7 +48,6 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
 
     }
     const handleChange = (e) => {
-        // console.log([e.target.name])
         const obj = { ...formData, [e.target.name]: e.target.value }
         setFormData(obj);
     }
@@ -68,7 +68,7 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                         variant="outlined"
                         size="small"
                         onChange={handleChange}
-                        style={{ margin: "20px" }}
+                        style={{ margin: "10px" }}
                     />
                     <TextField
                         label="Last Name"
@@ -77,7 +77,7 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                         variant="outlined"
                         size="small"
                         onChange={handleChange}
-                        style={{ margin: "20px" }}
+                        style={{ margin: "10px" }}
                     />
                 </NameInput>
                 <TextField
@@ -87,7 +87,16 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                     variant="outlined"
                     size="small"
                     onChange={handleChange}
-                    style={{ margin: "20px" }}
+                    style={{ margin: "10px" }}
+                />
+                <TextField
+                    label="Phone No"
+                    name="phoneNo"
+                    variant="outlined"
+                    size="small"
+                    type="tel"
+                    onChange={handleChange}
+                    style={{ margin: "10px" }}
                 />
                 <TextField
                     label="Password"
@@ -97,7 +106,7 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                     size="small"
                     type="password"
                     onChange={handleChange}
-                    style={{ margin: "20px" }}
+                    style={{ margin: "10px" }}
                 />
                 <TextField
                     label="Re-enter Password"
@@ -109,11 +118,11 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                     error={!isPasswordConfirm}
                     helperText={(!isPasswordConfirm) ? "Passwords don't match" : ""}
                     onChange={handleChange}
-                    style={{ margin: "20px" }}
+                    style={{ margin: "10px" }}
                 />
                 <RegisterButton isSignup={true} type="submit" />
             </form>
-            <p>Already have an account? <a onClick={() => toggleRegisteration(isSignup)}>Log in.</a></p>
+            <p>Already have an account? <a href="#" onClick={() => toggleRegisteration(isSignup)}>Log in.</a></p>
         </RegisterBox>
     )
 }
@@ -132,13 +141,13 @@ const NameInput = styled.div`
 `
 
 const RegisterBox = styled.div`
-    /* height: 90%; */
-    margin-bottom: 30px;
-    width: 45%;
+    margin-top: 7px;
+    margin-bottom: 40px;
+    width: 36%;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0px 11px 90px -10px #C0C0C0;
-    /* justify-content: center; */
+    background-color: white;
+    box-shadow: 0px 11px 90px -10px #717f80;
     align-items: center;
     display: flex;
     flex-direction: column;

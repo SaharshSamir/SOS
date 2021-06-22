@@ -15,9 +15,7 @@ import { likePost } from "../../Actions/post";
 import { useDispatch } from 'react-redux';
 
 
-
 const Post = ({ post, user }) => {
-    console.log(post);
     useEffect(() => {
         WebFont.load({
             google: {
@@ -28,7 +26,7 @@ const Post = ({ post, user }) => {
     let userName;
     if (user)
     {
-        userName = user.newUser.firstName + " " + user.newUser.lastName;
+        userName = user.firstName + " " + user.lastName;
     }
 
     const history = useHistory();
@@ -36,8 +34,14 @@ const Post = ({ post, user }) => {
 
     const [isLike, setIsLike] = useState(false);
     const [open, setOpen] = useState(false);
+    const [isContactOpen, setisContactOpen] = useState(false);
+
     const handleClose = () => {
         setOpen(!open);
+    }
+
+    const handleContactOpen = (e) => {
+        setisContactOpen(!isContactOpen);
     }
 
     useEffect(() => {
@@ -45,6 +49,8 @@ const Post = ({ post, user }) => {
         {
             setIsLike(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [post])
 
 
@@ -57,7 +63,6 @@ const Post = ({ post, user }) => {
         }
 
         setIsLike(!isLike);
-        // console.log(user);
         const data = {
             postId: post._id,
             userName
@@ -72,9 +77,11 @@ const Post = ({ post, user }) => {
             dispatch(likePost(data));
             post.likes.splice(post.likes.indexOf(userName), 1);
         }
-        // console.log(userName);
     }
-
+    const redirectToProfile = () => {
+        // dispatch(fetchProfile(post._user));
+        history.push(`/profilePage/${post.userName}?_user=${post._user}`);
+    }
 
     return (
         <Card>
@@ -83,7 +90,7 @@ const Post = ({ post, user }) => {
 
                 <AccountCircleIcon fontSize="large" />
                 <HeaderNameContainer>
-                    <Name className="name">{post.userName}</Name>
+                    <Name className="name" onClick={redirectToProfile}>{post.userName}</Name>
                     <p className="time">{moment(post.createdAt).fromNow()}</p>
                 </HeaderNameContainer>
 
@@ -98,20 +105,36 @@ const Post = ({ post, user }) => {
             </CardBody>
 
             <CardFooter>
-                <Like>
-                    {isLike ?
-                        <FavoriteIcon
-                            style={{ cursor: "pointer", color: "#f53b3b" }}
-                            onClick={handleLike}
-                        />
-                        :
-                        <FavoriteBorderIcon
-                            style={{ cursor: "pointer" }}
-                            onClick={handleLike}
-                        />
-                    }
-                    <Count>{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}</Count>
-                </Like>
+                <LikeComment>
+                    <Like>
+                        {isLike ?
+                            <FavoriteIcon
+                                style={{ cursor: "pointer", color: "#f53b3b" }}
+                                onClick={handleLike}
+                            />
+                            :
+                            <FavoriteBorderIcon
+                                style={{ cursor: "pointer" }}
+                                onClick={handleLike}
+                            />
+                        }
+                        <Count>{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}</Count>
+                    </Like>
+                </LikeComment>
+
+                <ContactButton onClick={handleContactOpen}>
+                    Contact
+                    </ContactButton>
+                <Dialog
+                    open={isContactOpen}
+                    onClose={() => setisContactOpen(false)}
+                >
+                    <DialogTitle>Contact Information:</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>{post.contactInfo}</DialogContentText>
+                    </DialogContent>
+                </Dialog>
+
             </CardFooter>
             <Dialog
                 open={open}
@@ -149,8 +172,6 @@ const CancelButton = styled.div`
         color: #4e88c7;
         border-color: #4e88c7;
     }
-
-    /* background-color: #f7f5e9; */
 `
 
 const RedirectButton = styled.div`
@@ -178,6 +199,19 @@ const Like = styled.div`
     display: flex;
 `
 
+const LikeComment = styled.div``
+
+const ContactButton = styled.div`
+    font-family: 'Poppins';
+    background-color: #ADEB89;
+    padding: 3px 12px 3px 12px;
+    border-radius: 20px;
+    &:hover{
+        background-color: #badba7;
+        cursor: pointer; 
+    }
+`
+
 const CardHeader = styled.div`
     width: 100%;
     display: flex;
@@ -195,15 +229,11 @@ const CardBodyTitle = styled.p`
     
 `;
 
-const HeaderAvatarContainer = styled.div`
-    margin-bottom: 3px;
-`
 
 const CardBodyDescription = styled.p`
     font-family: 'Poppins';
     font-size: 15px;
     font-weight: ligter;
-    /* letter-spacing: 0.1rem; */
 `;
 
 
@@ -228,6 +258,7 @@ const Card = styled.div`
     align-items: center;
     display: flex;
     flex-direction: column;
+    background-color: white;
 `
 
 const CardFooter = styled.div`
@@ -235,7 +266,7 @@ const CardFooter = styled.div`
     border-top: 0.5px solid black;
     padding: 10px 0 5px 5px;
     display: flex;
-    /* background-color: red; */
+    justify-content: space-between;
 `;
 
 const HeaderNameContainer = styled.div`

@@ -8,19 +8,20 @@ import { fetchPosts } from "../../Actions/post";
 import { connect } from "react-redux";
 
 
-
-
-
 const Timeline = (props) => {
     const dispatch = useDispatch();
 
     const [user, setUser] = useState({})
     useEffect(() => {
         dispatch(fetchPosts());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [])
 
     useEffect(() => {
         setUser(props.authData);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [props]);
 
     return (
@@ -44,15 +45,10 @@ const Nav = styled.div`
 const Container = styled.div`
     padding: 0;
     margin: 0;
-    /* margin-bottom: 30px; */
-    /* height: 100vh; */
     width: 100%;
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
-    /* justify-content: center; */
     background-color: #f5f1ed;
-    /* overflow-y: scroll; */
 `;
 
 

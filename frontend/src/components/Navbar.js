@@ -3,7 +3,7 @@ import styled from "styled-components"
 import WebFont from 'webfontloader';
 import { useHistory, useLocation } from 'react-router-dom';
 import { logOut, checkUser } from "../Actions/auth";
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import decode from "jwt-decode";
 
 
@@ -14,6 +14,7 @@ const Navbar = (props) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
     useEffect(() => {
         checkUser(user, dispatch);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
     useEffect(() => {
         WebFont.load({
@@ -21,6 +22,7 @@ const Navbar = (props) => {
                 families: ['Cabin']
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -49,13 +51,14 @@ const Navbar = (props) => {
                 (
                     <NavItems>
                         <NavItem hoverColor={props.hoverColor}>{user.newUser.firstName} {user.newUser.lastName}</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/timeline")}>Home</NavItem>
                         <NavItem hoverColor={props.hoverColor} onClick={handleLogOut}>Log Out</NavItem>
                     </NavItems>
                 )
                 :
                 (
                     <NavItems>
-                        <NavItem hoverColor={props.hoverColor}>About</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/timeline")}>Home</NavItem>
                         <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/signUp")}>Sign Up</NavItem>
                         <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/logIn")}>Log In</NavItem>
                     </NavItems>
@@ -65,7 +68,7 @@ const Navbar = (props) => {
         {
             return (
                 <NavItems>
-                    <NavItem hoverColor={props.hoverColor}>About</NavItem>
+                    <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/timeline")}>Home</NavItem>
                     <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/signUp")}>Sign Up</NavItem>
                     <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/register/logIn")}>Log In</NavItem>
                 </NavItems>
@@ -90,7 +93,7 @@ const NavItems = styled.ul`
     list-style: none;
     font-family: "Cabin";
     justify-content: space-between;
-    width: 25%;
+    width: 28%;
     
 `
 
@@ -124,10 +127,8 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    position: absolute;
+    position: sticky;
+    top: 0;
 `
-
-
-
 
 export default Navbar;

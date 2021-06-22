@@ -7,3 +7,6 @@ export const CHECK_USER = "CHECK_USER";
 export const UPDATE_POST = "UPDATE_POST";
 export const FETCH_ALL = "FETCH_ALL";
 export const UPLOAD_POST = "UPLOAD_POST";
+
+//PROFILE TYPES
+export const FETCH_PROFILE = "FETCH_PROFILE";

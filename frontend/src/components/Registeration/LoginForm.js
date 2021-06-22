@@ -5,7 +5,7 @@ import WebFont from 'webfontloader';
 import RegisterButton from './RegisterButton';
 import { useDispatch } from "react-redux";
 import { logIn } from "../../Actions/auth";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const initialFormData = { email: "", password: "" };
 
@@ -23,9 +23,7 @@ const LoginForm = ({ isSignup, toggleRegisteration }) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // console.log()
         dispatch(logIn(formData, history));
-        // console.log(formData);
     }
 
 
@@ -63,7 +61,7 @@ const LoginForm = ({ isSignup, toggleRegisteration }) => {
 
                 <RegisterButton isSignup={false} type="submit" />
             </form>
-            <p>Dont't have an account? <a onClick={() => toggleRegisteration(isSignup)}>Sign Up.</a></p>
+            <p>Dont't have an account? <a href="#" onClick={() => toggleRegisteration(isSignup)}>Sign Up.</a></p>
         </RegisterBox>
     )
 }
@@ -74,20 +72,16 @@ const Heading = styled.div`
     display: flex;
     justify-content: center;
 `
-const NameInput = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    
-`
 
 const RegisterBox = styled.div`
     /* height: 90%; */
     margin-bottom: 150px;
-    width: 45%;
+    margin-top: 45px;
+    width: 35%;
+    background-color: white;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0px 11px 90px -10px #C0C0C0;
+    box-shadow: 0px 11px 90px -10px #717f80;
     /* justify-content: center; */
     align-items: center;
     display: flex;
