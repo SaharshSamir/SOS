@@ -6,16 +6,17 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import WebFont from 'webfontloader';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import AuthDialog from '../Utils/AuthDialog';
 import { useHistory } from 'react-router-dom';
 import { likePost } from "../../Actions/post";
 import { useDispatch } from 'react-redux';
 
 
-const Post = ({ post, user }) => {
+const Post = ({ post, user, redirectToPostPage, isCard }) => {
     useEffect(() => {
         WebFont.load({
             google: {
@@ -45,7 +46,7 @@ const Post = ({ post, user }) => {
     }
 
     useEffect(() => {
-        if (post.likes.includes(userName))
+        if (post?.likes?.includes(userName))
         {
             setIsLike(true);
         }
@@ -64,18 +65,18 @@ const Post = ({ post, user }) => {
 
         setIsLike(!isLike);
         const data = {
-            postId: post._id,
+            postId: post?._id,
             userName
         }
-        if (!post.likes.includes(userName))
+        if (!post?.likes?.includes(userName))
         {
             dispatch(likePost(data));
-            post.likes.push(userName);
+            post?.likes?.push(userName);
         }
         else
         {
             dispatch(likePost(data));
-            post.likes.splice(post.likes.indexOf(userName), 1);
+            post?.likes?.splice(post.likes.indexOf(userName), 1);
         }
     }
     const redirectToProfile = () => {
@@ -83,8 +84,10 @@ const Post = ({ post, user }) => {
         history.push(`/profilePage/${post.userName}?_user=${post._user}`);
     }
 
+   
+
     return (
-        <Card>
+        <Card isCard={isCard}>
             <CardHeader className="card-header">
 
 
@@ -104,7 +107,7 @@ const Post = ({ post, user }) => {
                 </CardBodyDescription>
             </CardBody>
 
-            <CardFooter>
+            <CardFooter isCard={isCard}>
                 <LikeComment>
                     <Like>
                         {isLike ?
@@ -118,13 +121,17 @@ const Post = ({ post, user }) => {
                                 onClick={handleLike}
                             />
                         }
-                        <Count>{post.likes.length} {post.likes.length === 1 ? "Like" : "Likes"}</Count>
+                        <Count>{post?.likes?.length} {post?.likes?.length === 1 ? "Like" : "Likes"}</Count>
                     </Like>
+                    <Comment onClick={() => isCard? redirectToPostPage(post, user) : null } isCard={isCard}>
+                        <CommentOutlinedIcon />
+                        <Count>{post?.comments?.length} {post?.comments?.length === 1 ? "Comment" : "Comments"}</Count>
+                    </Comment>
                 </LikeComment>
 
                 <ContactButton onClick={handleContactOpen}>
                     Contact
-                    </ContactButton>
+                </ContactButton>
                 <Dialog
                     open={isContactOpen}
                     onClose={() => setisContactOpen(false)}
@@ -136,24 +143,12 @@ const Post = ({ post, user }) => {
                 </Dialog>
 
             </CardFooter>
-            <Dialog
+            <AuthDialog 
                 open={open}
                 onClose={handleClose}
-            >
-                <DialogTitle >
-                    {"You need to be logged in."}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {"In order to like or comment on a post, you need to be logged in. Would you like to log in?"}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <CancelButton onClick={() => setOpen(false)}>No</CancelButton>
-                    <RedirectButton onClick={() => history.push("/register/login")}>Yes</RedirectButton>
-                </DialogActions>
-
-            </Dialog>
+                setOpen={setOpen}
+                history={history}
+            />
         </Card>
     )
 };
@@ -198,8 +193,19 @@ const Count = styled.p`
 const Like = styled.div`
     display: flex;
 `
+const Comment = styled.div`
+    display: flex;
+    cursor: ${props => props.isCard? "pointer": "auto"};
+`
 
-const LikeComment = styled.div``
+const LikeComment = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: max-content;
+    div{
+        margin-right: 5px;
+    }
+`
 
 const ContactButton = styled.div`
     font-family: 'Poppins';
@@ -251,20 +257,21 @@ const Name = styled.p`
 
 const Card = styled.div`
     margin-bottom: 60px;
-    width: 75%;
-    border-radius: 20px;
+    width: ${props => props.isCard? "75%" : "100%"};
+    border-radius: ${props => props.isCard? "20px" : "0"};
+    border: ${props => props.isCard? "none" : "1px solid black"};
     padding: 20px;
-    box-shadow: 0px 0px 40px -10px #6e6d6d;
+    box-shadow: ${props => props.isCard? "0px 0px 40px -10px rgb(110, 109, 109)" : "none"};
     align-items: center;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: ${props => props.isCard? "white": "transparent"};
 `
 
 const CardFooter = styled.div`
     width: 100%;
-    border-top: 0.5px solid black;
-    padding: 10px 0 5px 5px;
+    border-top: ${props => props.isCard? "0.5px solid black" : "none"};
+    padding: 10px 0 5px 0;
     display: flex;
     justify-content: space-between;
 `;

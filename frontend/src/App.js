@@ -4,6 +4,7 @@ import Register from './components/Registeration/Register';
 import Landing from './components/Landing';
 import Timeline from "./components/timeline/Timeline";
 import ProfilePage from './components/Profile/ProfilePage';
+import PostPage from './components/timeline/PostPage/PostPage';
 
 
 
@@ -19,6 +20,7 @@ function App() {
           </Route>
           <Route exact path="/timeline" component={Timeline} />
           <Route exact path="/profilePage/:userName" component={ProfilePage} />
+          <Route exact path="/post/:postId" component={PostPage}/>
         </div>
       </BrowserRouter>
     </div>

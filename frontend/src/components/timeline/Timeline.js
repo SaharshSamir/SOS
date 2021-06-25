@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 const Timeline = (props) => {
     const dispatch = useDispatch();
 
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({});
     useEffect(() => {
         dispatch(fetchPosts());
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,10 +45,12 @@ const Nav = styled.div`
 const Container = styled.div`
     padding: 0;
     margin: 0;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     background-color: #f5f1ed;
+    overflow-y: auto;
 `;
 
 
