@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require
 const Post = mongoose.model("posts");
 const User = mongoose.model("users");
 
@@ -89,10 +90,46 @@ const likePost = async (req, res) => {
         res.status(201).send(newPost);
     } catch (e)
     {
-        console.log(`error in likePost: ${e}`);
+        console.error(`error in likePost:`);
+        console.error(e.message);
     }
 }
 
+const commentPost = async (req, res) => {
+    const {text, postId, commentUserName} = req.body;
+    const userId = req.userId;
+    
+    try {
+        const post = await Post.findById(postId);
+        const postUser = await User.findById(post._user);
+        const newComment = {
+            userName: commentUserName,
+            text,
+            _user: userId,
+            _post: postId
+        }
+
+        post.comments = [...post.comments, newComment]
+
+        let newPost = await Post.findOneAndUpdate(
+            {_id: postId},
+            post,
+            {new: true}
+        )
+        
+        newPost = {
+            ...newPost._doc,
+            userName: postUser.firstName + ' ' + postUser.lastName
+        }
+
+        res.json({message: "working", newPost: newPost});
+    } catch (e) {
+        console.error('error in commentPost controller: ');
+        console.error(e.message);
+    }
+}
+
+exports.commentPost = commentPost;
 exports.likePost = likePost;
 exports.upload = upload;
 exports.timelinePosts = timelinePosts;

@@ -18,11 +18,12 @@ export const fetchPosts = () => {
     return async dispatch => {
         try
         {
+            
             const res = await axios.get("/api/timeline/posts")
             dispatch({ type: FETCH_ALL, payload: res.data })
-        } catch (error)
+        } catch (e)
         {
-            console.log(error.message);
+            console.error(e.message);
         }
     }
 }
@@ -35,7 +36,19 @@ export const likePost = (data) => {
             dispatch({ type: UPDATE_POST, payload: res.data })
         } catch (e)
         {
-            console.log(e.message);
+            console.error(e.message);
+        }
+    }
+}
+
+export const commentPost = data => {
+    return async dispatch => {
+        try {
+            const res = await axios.post("/api/post/comment", data);
+            console.log(res);
+            dispatch({type: UPDATE_POST, payload: res.data.newPost})
+        } catch (e) {
+            console.error(e.message);
         }
     }
 }

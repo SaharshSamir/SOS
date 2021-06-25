@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from "react";
 import styled from 'styled-components';
 import { connect } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import Post from './Post';
-
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const PostsList = (props) => {
     const [posts, setPosts] = useState([]);
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({});
+    const history = useHistory();
 
     useEffect(() => {
         setPosts(props.posts);
         setUser(props.auth?.authData?.newUser);
-    }, [props])
+    }, [props]);
+
+    const redirectToPostPage = (post) => {
+        console.log(post.title);
+        history.push(`/post/${post._id}`);
+    }
 
     const renderPosts = () => {
 
         return posts.map((post, postIdx) => {
             return (
-                <Post post={post} key={postIdx} user={user} />
-                // <> </>
+                <Post post={post}  key={postIdx} user={user} redirectToPostPage={redirectToPostPage} isCard={true}/>
             )
         })
     }
 
     return (
         <Container className="container">
-            {renderPosts()}
+            {(posts.length==0)? <CircularProgress /> : renderPosts()}
         </Container>
     )
 }
