@@ -94,7 +94,6 @@ const likePost = async (req, res) => {
         console.error(e.message);
     }
 }
-
 const commentPost = async (req, res) => {
     const {text, postId, commentUserName} = req.body;
     const userId = req.userId;
@@ -129,6 +128,20 @@ const commentPost = async (req, res) => {
     }
 }
 
+
+const deletePost = async (req, res) => {
+    const {postId} = req.params;
+    try {
+        await Post.findByIdAndDelete(postId);
+        res.status(200).send("Successfully deleted");
+
+    } catch (e) {
+        console.error(e.message);
+    }
+    console.log(postId);
+}
+
+exports.deletePost = deletePost;
 exports.commentPost = commentPost;
 exports.likePost = likePost;
 exports.upload = upload;

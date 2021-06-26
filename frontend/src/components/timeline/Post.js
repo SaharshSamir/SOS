@@ -22,7 +22,7 @@ import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AuthDialog from '../Utils/AuthDialog';
 import { useHistory } from 'react-router-dom';
-import { likePost } from "../../Actions/post";
+import { likePost, deletePost } from "../../Actions/post";
 import { useDispatch } from 'react-redux';
 
 
@@ -116,6 +116,14 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
     }
 
 
+    const handleDelete = () => {
+        if(!user){
+            setOpen(true);
+            return;
+        }
+        dispatch(deletePost(post._id));
+        handleMoreClose();
+    }
 
     return (
         <Card isCard={isCard}>
@@ -152,7 +160,7 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
                     }}
                 >
                     <List style={{color: "white", backgroundColor: "#37393b"}}>
-                        <Button>
+                        <Button onClick={handleDelete}>
                             <ListItem>
                                 <DeleteOutlineOutlinedIcon style={{color: "#de4747"}}/>
                                 <MoreText className="moreText">Delete</MoreText>
