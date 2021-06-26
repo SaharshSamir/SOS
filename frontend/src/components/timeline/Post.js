@@ -10,6 +10,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import IconButton from '@material-ui/core/IconButton';
+import Popover from '@material-ui/core/Popover';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AuthDialog from '../Utils/AuthDialog';
 import { useHistory } from 'react-router-dom';
 import { likePost } from "../../Actions/post";
@@ -36,19 +46,40 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
     const [isLike, setIsLike] = useState(false);
     const [open, setOpen] = useState(false);
     const [isContactOpen, setisContactOpen] = useState(false);
+    const [isAuthPost, setIsAuthPost] = useState(false);
 
+
+    //Stuff related to 'more' button
+    const [anchorEl, setAnchorEl] = useState(null);
+    let isMoreOpen = Boolean(anchorEl);
+    const handleMoreClose = () => {
+        setAnchorEl(null);
+    }
+    const handleMoreClick = (e) => {
+        setAnchorEl(e.currentTarget);
+    }
+    const id = isMoreOpen ? 'simple-popover' : undefined;
+    
+
+    
     const handleClose = () => {
         setOpen(!open);
     }
-
     const handleContactOpen = (e) => {
         setisContactOpen(!isContactOpen);
     }
 
     useEffect(() => {
-        if (post?.likes?.includes(userName))
+        if (post ?.likes ?.includes(userName))
         {
             setIsLike(true);
+        }
+
+
+        if(post?._user === user?._id) {
+            setIsAuthPost(true);
+        }else {
+            setIsAuthPost(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
@@ -65,18 +96,18 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
 
         setIsLike(!isLike);
         const data = {
-            postId: post?._id,
+            postId: post ?._id,
             userName
         }
-        if (!post?.likes?.includes(userName))
+        if (!post ?.likes ?.includes(userName))
         {
             dispatch(likePost(data));
-            post?.likes?.push(userName);
+            post ?.likes ?.push(userName);
         }
         else
         {
             dispatch(likePost(data));
-            post?.likes?.splice(post.likes.indexOf(userName), 1);
+            post ?.likes ?.splice(post.likes.indexOf(userName), 1);
         }
     }
     const redirectToProfile = () => {
@@ -84,18 +115,58 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
         history.push(`/profilePage/${post.userName}?_user=${post._user}`);
     }
 
-   
+
 
     return (
         <Card isCard={isCard}>
             <CardHeader className="card-header">
 
-
-                <AccountCircleIcon fontSize="large" />
-                <HeaderNameContainer>
-                    <Name className="name" onClick={redirectToProfile}>{post.userName}</Name>
-                    <p className="time">{moment(post.createdAt).fromNow()}</p>
-                </HeaderNameContainer>
+                <div style={{display: "flex"}}>
+                    <AccountCircleIcon fontSize="large" />
+                    <HeaderNameContainer>
+                        <Name className="name" onClick={redirectToProfile}>{post.userName}</Name>
+                        <p className="time">{moment(post.createdAt).fromNow()}</p>
+                    </HeaderNameContainer>
+                </div>
+               {isAuthPost ? (
+                    <div>
+                        <IconButton aria-describedby={id} className="moreIcon" style={{padding: "5px"}} onClick={handleMoreClick}>
+                            <MoreHorizIcon />
+                        </IconButton>
+                    </div>
+               ) : (
+                   <></>
+               )}
+               <Popover 
+                    id={id}
+                    open={isMoreOpen}
+                    anchorEl={anchorEl}
+                    onClose={handleMoreClose}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
+                      transformOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                    }}
+                >
+                    <List style={{color: "white", backgroundColor: "#37393b"}}>
+                        <Button>
+                            <ListItem>
+                                <DeleteOutlineOutlinedIcon style={{color: "#de4747"}}/>
+                                <MoreText className="moreText">Delete</MoreText>
+                            </ListItem>
+                        </Button>
+                        <Divider />
+                        <Button style={{width: "100%"}}>
+                            <ListItem>
+                                <EditOutlinedIcon style={{color: "#83b2eb"}}/>
+                                <MoreText className="moreText">Edit</MoreText>
+                            </ListItem>
+                        </Button>
+                    </List>
+               </Popover>
 
             </CardHeader>
             <CardBody>
@@ -121,11 +192,11 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
                                 onClick={handleLike}
                             />
                         }
-                        <Count>{post?.likes?.length} {post?.likes?.length === 1 ? "Like" : "Likes"}</Count>
+                        <Count>{post ?.likes ?.length} {post ?.likes ?.length === 1 ? "Like" : "Likes"}</Count>
                     </Like>
-                    <Comment onClick={() => isCard? redirectToPostPage(post, user) : null } isCard={isCard}>
+                    <Comment onClick={() => isCard ? redirectToPostPage(post, user) : null} isCard={isCard}>
                         <CommentOutlinedIcon />
-                        <Count>{post?.comments?.length} {post?.comments?.length === 1 ? "Comment" : "Comments"}</Count>
+                        <Count>{post ?.comments ?.length} {post ?.comments ?.length === 1 ? "Comment" : "Comments"}</Count>
                     </Comment>
                 </LikeComment>
 
@@ -143,7 +214,7 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
                 </Dialog>
 
             </CardFooter>
-            <AuthDialog 
+            <AuthDialog
                 open={open}
                 onClose={handleClose}
                 setOpen={setOpen}
@@ -195,7 +266,7 @@ const Like = styled.div`
 `
 const Comment = styled.div`
     display: flex;
-    cursor: ${props => props.isCard? "pointer": "auto"};
+    cursor: ${props => props.isCard ? "pointer" : "auto"};
 `
 
 const LikeComment = styled.div`
@@ -221,6 +292,16 @@ const ContactButton = styled.div`
 const CardHeader = styled.div`
     width: 100%;
     display: flex;
+    justify-content: space-between;
+    .moreIcon{
+        justify-self: flex-end;
+    }
+`
+
+const MoreText = styled.p`
+    padding: 0px 10px;
+    font-family: 'Poppins';
+    color: white;
 `
 
 const CardBody = styled.div`
@@ -257,20 +338,20 @@ const Name = styled.p`
 
 const Card = styled.div`
     margin-bottom: 60px;
-    width: ${props => props.isCard? "75%" : "100%"};
-    border-radius: ${props => props.isCard? "20px" : "0"};
-    border: ${props => props.isCard? "none" : "1px solid black"};
+    width: ${props => props.isCard ? "75%" : "100%"};
+    border-radius: ${props => props.isCard ? "20px" : "0"};
+    border: ${props => props.isCard ? "none" : "1px solid black"};
     padding: 20px;
-    box-shadow: ${props => props.isCard? "0px 0px 40px -10px rgb(110, 109, 109)" : "none"};
+    box-shadow: ${props => props.isCard ? "0px 0px 40px -10px rgb(110, 109, 109)" : "none"};
     align-items: center;
     display: flex;
     flex-direction: column;
-    background-color: ${props => props.isCard? "white": "transparent"};
+    background-color: ${props => props.isCard ? "white" : "transparent"};
 `
 
 const CardFooter = styled.div`
     width: 100%;
-    border-top: ${props => props.isCard? "0.5px solid black" : "none"};
+    border-top: ${props => props.isCard ? "0.5px solid black" : "none"};
     padding: 10px 0 5px 0;
     display: flex;
     justify-content: space-between;
