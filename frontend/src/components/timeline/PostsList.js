@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import Post from './Post';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import moment from "moment";
 
 
 const PostsList = (props) => {
@@ -23,12 +24,25 @@ const PostsList = (props) => {
 
     const renderPosts = () => {
 
-        return posts.map((post, postIdx) => {
+        const sortedPosts = posts.reverse((a, b) => {
+            return moment(b).format('X') - moment(a).format('X');
+        })
+
+        // console.log(sortedPosts);
+
+        const somePosts = sortedPosts.map((post, postIdx) => {
+            // console.log(post);
             return (
                 <Post post={post}  key={postIdx} user={user} redirectToPostPage={redirectToPostPage} isCard={true}/>
             )
         })
+        // console.log(somePosts);
+
+        return somePosts;
     }
+
+    const test = renderPosts()
+    console.log(test)
 
     return (
         <Container className="container">
