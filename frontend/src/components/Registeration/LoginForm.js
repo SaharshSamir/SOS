@@ -33,6 +33,11 @@ const LoginForm = ({ isSignup, toggleRegisteration }) => {
 
     }
 
+    const handleIsSignUp = () => {
+        toggleRegisteration(isSignup);
+        history.push("/register/signUp");
+    }
+
     return (
         <RegisterBox>
             <Heading>
@@ -61,7 +66,7 @@ const LoginForm = ({ isSignup, toggleRegisteration }) => {
 
                 <RegisterButton isSignup={false} type="submit" />
             </form>
-            <p>Dont't have an account? <a href="#" onClick={() => toggleRegisteration(isSignup)}>Sign Up.</a></p>
+            <p>Dont't have an account? <a onClick={handleIsSignUp}>Sign Up.</a></p>
         </RegisterBox>
     )
 }

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 
 const CommentSection  = (props) => {
 
-    console.log(props);
     const {postId} = useParams();
     const [post, setPost] = useState({});
 

@@ -12,7 +12,9 @@ const Timeline = (props) => {
     const dispatch = useDispatch();
 
     const [user, setUser] = useState({});
+
     useEffect(() => {
+        // window.location.reload();
         dispatch(fetchPosts());
         // eslint-disable-next-line react-hooks/exhaustive-deps
 

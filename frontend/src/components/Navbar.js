@@ -43,6 +43,11 @@ const Navbar = (props) => {
             if (decodedToken.exp * 1000 < new Date().getTime()) handleLogOut();
         }
     }, [location])
+    
+    const userName = user?.newUser.firstName + " " + user?.newUser.lastName;
+    const handleProfileRedirect = () => {
+        history.push(`/profilePage/${userName}?_user=${user.newUser._id}`);
+    } 
 
     const renderNavItems = () => {
         if (user)
@@ -50,7 +55,7 @@ const Navbar = (props) => {
             return user ?
                 (
                     <NavItems>
-                        <NavItem hoverColor={props.hoverColor}>{user.newUser.firstName} {user.newUser.lastName}</NavItem>
+                        <NavItem hoverColor={props.hoverColor} onClick={handleProfileRedirect}>{user.newUser.firstName} {user.newUser.lastName}</NavItem>
                         <NavItem hoverColor={props.hoverColor} onClick={() => history.push("/timeline")}>Home</NavItem>
                         <NavItem hoverColor={props.hoverColor} onClick={handleLogOut}>Log Out</NavItem>
                     </NavItems>

@@ -1,4 +1,4 @@
-import { FETCH_ALL, UPDATE_POST, UPLOAD_POST } from "./types";
+import { FETCH_ALL, UPDATE_POST, UPLOAD_POST} from "./types";
 import axios from 'axios';
 
 
@@ -14,11 +14,23 @@ export const upload = (formData) => {
     }
 }
 
+export const update = (formData) => {
+    return async dispatch => {
+        try {
+            const res = await axios.post("/api/post/update", formData);
+            console.log(res.data);
+            dispatch({type: UPDATE_POST, payload: res.data._doc});
+            
+        } catch (e) {
+            console.error(e);
+        }
+    }
+}
+
 export const fetchPosts = () => {
     return async dispatch => {
         try
         {
-            
             const res = await axios.get("/api/timeline/posts")
             dispatch({ type: FETCH_ALL, payload: res.data })
         } catch (e)
@@ -47,6 +59,19 @@ export const commentPost = data => {
             const res = await axios.post("/api/post/comment", data);
             console.log(res);
             dispatch({type: UPDATE_POST, payload: res.data.newPost})
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+}
+
+export const deletePost = id => {
+    return async dispatch => {
+        try {
+            await axios.delete(`/api/post/delete/${id}`);
+            const res = await axios.get("/api/timeline/posts");
+            dispatch({ type: FETCH_ALL, payload: res.data });
+
         } catch (e) {
             console.error(e.message);
         }
