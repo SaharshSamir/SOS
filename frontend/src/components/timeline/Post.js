@@ -21,9 +21,11 @@ import Divider from '@material-ui/core/Divider';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AuthDialog from '../Utils/AuthDialog';
+import EditModal from './EditModal';
 import { useHistory } from 'react-router-dom';
 import { likePost, deletePost } from "../../Actions/post";
 import { useDispatch } from 'react-redux';
+
 
 
 const Post = ({ post, user, redirectToPostPage, isCard }) => {
@@ -47,6 +49,7 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
     const [open, setOpen] = useState(false);
     const [isContactOpen, setisContactOpen] = useState(false);
     const [isAuthPost, setIsAuthPost] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
 
     //Stuff related to 'more' button
@@ -125,6 +128,10 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
         handleMoreClose();
     }
 
+    const handleEdit = () => {
+        setIsModalOpen(!isModalOpen);
+    }
+
     return (
         <Card isCard={isCard}>
             <CardHeader className="card-header">
@@ -162,20 +169,25 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
                     <List style={{color: "white", backgroundColor: "#37393b"}}>
                         <Button onClick={handleDelete}>
                             <ListItem>
-                                <DeleteOutlineOutlinedIcon style={{color: "#de4747"}}/>
+                                <ListItemIcon style={{minWidth: "0"}}>
+                                    <DeleteOutlineOutlinedIcon style={{color: "#de4747"}}/>
+                                </ListItemIcon>
                                 <MoreText className="moreText">Delete</MoreText>
                             </ListItem>
                         </Button>
                         <Divider />
-                        <Button style={{width: "100%"}}>
+                        <Button style={{width: "100%"}} onClick={handleEdit}>
                             <ListItem>
-                                <EditOutlinedIcon style={{color: "#83b2eb"}}/>
+                                <ListItemIcon style={{minWidth: "0"}}>
+                                    <EditOutlinedIcon style={{color: "#83b2eb"}}/>
+                                </ListItemIcon>
                                 <MoreText className="moreText">Edit</MoreText>
                             </ListItem>
                         </Button>
                     </List>
-               </Popover>
-
+                </Popover>
+                <EditModal open={isModalOpen} setOpen={setIsModalOpen} post={post}/>
+               
             </CardHeader>
             <CardBody>
                 <CardBodyTitle>

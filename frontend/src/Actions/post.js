@@ -1,4 +1,4 @@
-import { FETCH_ALL, UPDATE_POST, UPLOAD_POST } from "./types";
+import { FETCH_ALL, UPDATE_POST, UPLOAD_POST} from "./types";
 import axios from 'axios';
 
 
@@ -11,6 +11,19 @@ export const upload = (formData) => {
     return async dispatch => {
         const res = await axios.post("/api/upload", formData);
         dispatch({ type: UPLOAD_POST, payload: res.data });
+    }
+}
+
+export const update = (formData) => {
+    return async dispatch => {
+        try {
+            const res = await axios.post("/api/post/update", formData);
+            console.log(res.data);
+            dispatch({type: UPDATE_POST, payload: res.data._doc});
+            
+        } catch (e) {
+            console.error(e);
+        }
     }
 }
 

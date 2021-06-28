@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const Comment = require
 const Post = mongoose.model("posts");
 const User = mongoose.model("users");
 
@@ -23,9 +22,7 @@ const upload = async (req, res) => {
             ...post._doc,
             userName: user.firstName + ' ' + user.lastName
         }
-
-        console.log("in controller");
-        console.log(post);
+        
         res.send({ message: "ho gaya", newPost });
     } catch (e)
     {
@@ -33,27 +30,23 @@ const upload = async (req, res) => {
     }
 }
 
+//edit post
+const updatePost = async (req, res) => {
 
-const timelinePosts = async (req, res) => {
-    try
-    {
-        const posts = await Post.find({});
+    const{ title, description, contactInfo, postId, userName } = req.body;
+    try {
+        const post = await Post.findById(postId);
+        post.title = title;
+        post.description = description;
+        post.contactInfo = contactInfo;
 
-        //add user the post belongs to, to the each post
-        const getPosts = async () => {
-            const newPosts = posts.map(async post => {
-                const user = await User.find({ _id: post._user })
-                const newPost = { ...post._doc, userName: user[0].firstName + ' ' + user[0].lastName }
-                return newPost
-            })
-            return newPosts;
-        }
-        thePosts = await getPosts();
-        const results = await Promise.all(thePosts);
-        res.send(results);
-    } catch (e)
-    {
-        console.log(`error in timeline posts: ${e.message}`);
+        const updatedPost = await Post.findOneAndUpdate({_id: postId}, post, {new: true});
+
+        const newPost = {...updatedPost, userName};
+        
+        res.status(201).send(newPost);
+    } catch (e) {
+        console.error(e);
     }
 }
 
@@ -94,6 +87,33 @@ const likePost = async (req, res) => {
         console.error(e.message);
     }
 }
+
+
+const timelinePosts = async (req, res) => {
+    try
+    {
+        const posts = await Post.find({});
+
+        //add user the post belongs to, to the each post
+        const getPosts = async () => {
+            const newPosts = posts.map(async post => {
+                const user = await User.find({ _id: post._user })
+                const newPost = { ...post._doc, userName: user[0].firstName + ' ' + user[0].lastName }
+                return newPost
+            })
+            return newPosts;
+        }
+        thePosts = await getPosts();
+        const results = await Promise.all(thePosts);
+        res.send(results);
+    } catch (e)
+    {
+        console.log(`error in timeline posts: ${e.message}`);
+    }
+}
+
+
+
 const commentPost = async (req, res) => {
     const {text, postId, commentUserName} = req.body;
     const userId = req.userId;
@@ -104,6 +124,7 @@ const commentPost = async (req, res) => {
         const newComment = {
             userName: commentUserName,
             text,
+            createdAt: new Date(),
             _user: userId,
             _post: postId
         }
@@ -141,6 +162,10 @@ const deletePost = async (req, res) => {
     console.log(postId);
 }
 
+
+
+
+exports.updatePost = updatePost;
 exports.deletePost = deletePost;
 exports.commentPost = commentPost;
 exports.likePost = likePost;

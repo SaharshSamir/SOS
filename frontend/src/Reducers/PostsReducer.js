@@ -10,6 +10,7 @@ export default (state = [], action) => {
             return [...state, action.payload.newPost];
 
         case UPDATE_POST:
+            console.log(action);
             return state.map(post => post._id === action.payload._id ? action.payload : post);
         default:
             return state

@@ -53,6 +53,10 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
     }
 
 
+    const handleIsSignUp = () => {
+        toggleRegisteration(isSignup);
+        history.push("/register/logIn")
+    }
 
     return (
         <RegisterBox>
@@ -122,12 +126,12 @@ const SignupForm = ({ isSignup, toggleRegisteration }) => {
                 />
                 <RegisterButton isSignup={true} type="submit" />
             </form>
-            <p>Already have an account? <a href="#" onClick={() => toggleRegisteration(isSignup)}>Log in.</a></p>
+            <p>Already have an account? <a onClick={handleIsSignUp} >Log in.</a></p>
         </RegisterBox>
     )
 }
 
-
+// onClick={() => toggleRegisteration(isSignup)}
 const Heading = styled.div`
     font-family: "Mitr";
     display: flex;
