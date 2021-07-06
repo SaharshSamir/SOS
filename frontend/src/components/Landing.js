@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Navbar from "./Navbar";
+import Navbar from "./Navbar/Navbar";
 import styled from "styled-components";
 import WebFont from 'webfontloader';
 import Drawing from "../assets/Illustration.svg"
@@ -19,7 +19,7 @@ const Landing = () => {
     return (
         <Container className="contianer">
             <Nav>
-                <Navbar bgColor="transparent" hoverColor="#ffe9ab" />
+                <Navbar bgColor="transparent" hoverColor="#ffe9ab" isSearch={false}/>
             </Nav>
             <Left>
                 <Content>

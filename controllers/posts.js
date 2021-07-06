@@ -26,7 +26,7 @@ const upload = async (req, res) => {
         res.send({ message: "ho gaya", newPost });
     } catch (e)
     {
-        console.log(e.message);
+        console.error(e.message);
     }
 }
 
@@ -159,7 +159,6 @@ const deletePost = async (req, res) => {
     } catch (e) {
         console.error(e.message);
     }
-    console.log(postId);
 }
 
 

@@ -18,31 +18,33 @@ const PostsList = (props) => {
     }, [props]);
 
     const redirectToPostPage = (post) => {
-        console.log(post.title);
         history.push(`/post/${post._id}`);
     }
 
     const renderPosts = () => {
 
-        const sortedPosts = posts.reverse((a, b) => {
-            return moment(b).format('X') - moment(a).format('X');
-        })
 
-        // console.log(sortedPosts);
+        const newPosts = [];
+        const searchedPosts = [];
 
-        const somePosts = sortedPosts.map((post, postIdx) => {
-            // console.log(post);
-            return (
-                <Post post={post}  key={postIdx} user={user} redirectToPostPage={redirectToPostPage} isCard={true}/>
+        for(let i=posts.length-1; i>=0; i--){
+            newPosts.push(
+                <Post post={posts[i]}  key={i} user={user} redirectToPostPage={redirectToPostPage} isCard={true}/>
             )
-        })
-        // console.log(somePosts);
+        }
 
-        return somePosts;
+        for(let i=props.searchedPosts.length-1; i>=0; i--){
+            searchedPosts.push(
+                <Post post={props.searchedPosts[i]} key={i} user={user} redirectToPostPage={redirectToPostPage} isCard={true}/>
+            )
+        }
+
+
+        console.log(props.searchedPosts);
+
+        return (searchedPosts.length !== 0)? searchedPosts : newPosts;
+
     }
-
-    const test = renderPosts()
-    console.log(test)
 
     return (
         <Container className="container">

@@ -41,7 +41,6 @@ const EditModal = (props) => {
         } else
         {
             setFormData(formData);
-            console.log(formData);
             // e.target.reset()
             dispatch(update({...formData, postId: props.post._id, postUser: props.post._user, userName: props.post.userName}));
             props.setOpen(false);

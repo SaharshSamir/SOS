@@ -11,7 +11,6 @@ export const signUp = (formData, router) => {
             router.push("/timeline");
             dispatch({ type: AUTH, payload: res.data });
 
-            // console.log(`from auth action, ${res.data}`);
         } catch (error)
         {
             console.log(error.message);
@@ -20,7 +19,6 @@ export const signUp = (formData, router) => {
 }
 
 export const checkUser = (user, dispatch) => {
-    // console.log("in check user")
     dispatch({ type: CHECK_USER, payload: user });
 }
 

@@ -7,12 +7,9 @@ const User = mongoose.model("users");
 const logIn = async (req, res) => {
     //..
     const { email, password } = req.body;
-    // console.log("In login");
     try
     {
-        console.log("in login ")
         const existingUser = await User.findOne({ email });
-        // console.log(`login existing user: ${JSON.stringify(existingUser)}`)
         if (!existingUser) return res.status(404).json({ message: "No user with this email" })
 
         const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
@@ -22,7 +19,7 @@ const logIn = async (req, res) => {
         res.status(200).json({ newUser: existingUser, token, message: "log in successful" })
     } catch (e)
     {
-        console.log(e.message);
+        console.error(e.message);
         res.status(500).json({ message: "Something went wrong :(" })
     }
 }
@@ -51,7 +48,7 @@ const signUp = async (req, res) => {
     } catch (e)
     {
         res.status(500).json({ message: "Something went wrong :(" })
-        console.log(e.message);
+        console.error(e.message);
     }
 }
 

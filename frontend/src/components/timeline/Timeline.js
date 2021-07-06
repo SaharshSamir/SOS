@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import styled from 'styled-components';
-import Navbar from '../Navbar';
+import Navbar from '../Navbar/Navbar';
 import NewPost from './NewPost';
 import PostsList from "./PostsList";
 import { useDispatch } from 'react-redux';
 import { fetchPosts } from "../../Actions/post";
 import { connect } from "react-redux";
+import ChangeDefault from './SearchContext';
 
 
 const Timeline = (props) => {
     const dispatch = useDispatch();
 
     const [user, setUser] = useState({});
+    const [isDefault, setIsDefault] = useState(true);
+    const [targetPosts, setTargetPosts] = useState([]);
 
     useEffect(() => {
         // window.location.reload();
         dispatch(fetchPosts());
         // eslint-disable-next-line react-hooks/exhaustive-deps
 
-    }, [])
+    }, []);
 
     useEffect(() => {
         setUser(props.authData);
@@ -26,14 +29,17 @@ const Timeline = (props) => {
 
     }, [props]);
 
+
     return (
-        <Container>
-            <Nav className="navv">
-                <Navbar bgColor="#D5F3C4" hoverColor="#b8d1a9" />
-            </Nav>
-            {user ? (<NewPost />) : (<> </>)}
-            <PostsList />
-        </Container>
+        <ChangeDefault.Provider value={setTargetPosts}>
+            <Container>
+                <Nav className="navv">
+                    <Navbar bgColor="#D5F3C4" hoverColor="#b8d1a9" isSearch={true}/>
+                </Nav>
+                {user ? (<NewPost />) : (<> </>)}
+                <PostsList searchedPosts={targetPosts}/>
+            </Container>
+        </ChangeDefault.Provider>
     )
 
 }

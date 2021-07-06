@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
-import Navbar from '../../Navbar';
+import Navbar from '../../Navbar/Navbar';
 import PostSection from './PostSection';
 import CommentSection from './CommentSection';
 import AuthDialog from '../../Utils/AuthDialog';

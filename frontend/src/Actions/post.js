@@ -8,6 +8,10 @@ if (localStorage.getItem('profile'))
 }
 
 export const upload = (formData) => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
     return async dispatch => {
         const res = await axios.post("/api/upload", formData);
         dispatch({ type: UPLOAD_POST, payload: res.data });
@@ -15,10 +19,13 @@ export const upload = (formData) => {
 }
 
 export const update = (formData) => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
     return async dispatch => {
         try {
             const res = await axios.post("/api/post/update", formData);
-            console.log(res.data);
             dispatch({type: UPDATE_POST, payload: res.data._doc});
             
         } catch (e) {

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 
 
 const Register = () => {

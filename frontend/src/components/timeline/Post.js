@@ -13,11 +13,11 @@ import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import IconButton from '@material-ui/core/IconButton';
 import Popover from '@material-ui/core/Popover';
+import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import AuthDialog from '../Utils/AuthDialog';
@@ -214,7 +214,7 @@ const Post = ({ post, user, redirectToPostPage, isCard }) => {
                         }
                         <Count>{post ?.likes ?.length} {post ?.likes ?.length === 1 ? "Like" : "Likes"}</Count>
                     </Like>
-                    <Comment onClick={() => isCard ? redirectToPostPage(post, user) : null} isCard={isCard}>
+                    <Comment onClick={() => isCard ? redirectToPostPage(post) : null} isCard={isCard}>
                         <CommentOutlinedIcon />
                         <Count>{post ?.comments ?.length} {post ?.comments ?.length === 1 ? "Comment" : "Comments"}</Count>
                     </Comment>

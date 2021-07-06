@@ -6,7 +6,6 @@ export default (state = {}, action) => {
     {
         case FETCH_PROFILE:
             const profile = action.payload;
-            console.log(profile);
             return { ...state, profile }
         default:
             return state;

@@ -20,7 +20,7 @@ const UserPosts = (props) => {
     const renderPosts = (posts) => {
         return posts?.map((post, postIdx) => {
             return (
-                <Post post={post} key={postIdx} user={user} />
+                <Post post={post} key={postIdx} user={user} isCard={true}/>
             )
         })
     }
