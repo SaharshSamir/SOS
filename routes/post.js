@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { upload, timelinePosts, likePost, commentPost, deletePost, updatePost } = require("../controllers/posts")
+const { upload, timelinePosts, likePost, commentPost, deletePost, updatePost, deleteComment } = require("../controllers/posts")
 const requireAuth = require("../middlewares/requireAuth");
 
 
-router.post("/upload", requireAuth, upload);
 router.get("/timeline/posts", timelinePosts);
+router.post("/upload", requireAuth, upload);
 router.post("/post/like", requireAuth, likePost);
 router.post("/post/comment", requireAuth, commentPost);
-router.delete("/post/delete/:postId", requireAuth, deletePost);
 router.post("/post/update", requireAuth, updatePost);
+router.post("/post/comment/delete", requireAuth, deleteComment);
+router.delete("/post/delete/:postId", requireAuth, deletePost);
 
 module.exports = router;

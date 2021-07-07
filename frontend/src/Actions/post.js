@@ -72,7 +72,22 @@ export const commentPost = data => {
     return async dispatch => {
         try {
             const res = await axios.post("/api/post/comment", data);
-            console.log(res);
+            dispatch({type: UPDATE_POST, payload: res.data.newPost})
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+}
+
+export const deleteComment = (postId, commentId) => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
+
+    return async dispatch => {
+        try {
+            const res = await axios.post(`/api/post/comment/delete`, {postId, commentId})
             dispatch({type: UPDATE_POST, payload: res.data.newPost})
         } catch (e) {
             console.error(e.message);

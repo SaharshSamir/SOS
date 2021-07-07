@@ -142,7 +142,7 @@ const commentPost = async (req, res) => {
             userName: postUser.firstName + ' ' + postUser.lastName
         }
 
-        res.json({message: "working", newPost: newPost});
+        res.status(200).json({message: "comment posted successfully", newPost: newPost});
     } catch (e) {
         console.error('error in commentPost controller: ');
         console.error(e.message);
@@ -161,9 +161,51 @@ const deletePost = async (req, res) => {
     }
 }
 
+const deleteComment = async (req, res) => {
+    let {postId, commentId} = req.body;
+    commentId = JSON.stringify(commentId);
+    try {
+        const post = await Post.findById(postId);
+        const postUser = await User.findById(post._user);
+
+        // console.log(`comment id from user: ${commentId}`);
+        // console.log(`comment id from mongo: ${post.comments[0]._id}`);
+
+        const updatedComments = post.comments.filter(comment => {
+            const dbCommentId = JSON.stringify(comment._id);
+            // console.log(`the id from mongo is: ${dbCommentId} and it's type is: ${typeof(dbCommentId)}`);
+            // console.log(`the id from frontend is: ${commentId} and it's type is: ${typeof(commentId)}`);
+
+
+            return dbCommentId !== commentId;
+        });
+        
+        post.comments = updatedComments;
+        console.log(post);
+
+        let newPost = await Post.findOneAndUpdate(
+            {_id: postId},
+            post,
+            {new: true}
+        );
+
+        newPost = {
+            ...newPost._doc,
+            userName: postUser.firstName + ' ' + postUser.lastName
+        }
+
+        res.status(200).json({message: "comment deleted succefully", newPost: newPost});
+
+
+    } catch (e) {
+        console.error("Error in deleteComment")
+        console.error(e.message);
+    }
+}
 
 
 
+exports.deleteComment = deleteComment;
 exports.updatePost = updatePost;
 exports.deletePost = deletePost;
 exports.commentPost = commentPost;
