@@ -168,15 +168,8 @@ const deleteComment = async (req, res) => {
         const post = await Post.findById(postId);
         const postUser = await User.findById(post._user);
 
-        // console.log(`comment id from user: ${commentId}`);
-        // console.log(`comment id from mongo: ${post.comments[0]._id}`);
-
         const updatedComments = post.comments.filter(comment => {
             const dbCommentId = JSON.stringify(comment._id);
-            // console.log(`the id from mongo is: ${dbCommentId} and it's type is: ${typeof(dbCommentId)}`);
-            // console.log(`the id from frontend is: ${commentId} and it's type is: ${typeof(commentId)}`);
-
-
             return dbCommentId !== commentId;
         });
         
