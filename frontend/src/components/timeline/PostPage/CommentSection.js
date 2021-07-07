@@ -17,7 +17,7 @@ const CommentSection  = (props) => {
 
     const renderPosts = () => {
         return post?.comments?.map((comment, idx) => {
-            return <Comment comment={comment} isCard={false} key={idx}/>
+            return <Comment user={props.user} comment={comment} isCard={false} key={idx}/>
         })
     }
     

@@ -48,6 +48,10 @@ export const fetchPosts = () => {
 }
 
 export const likePost = (data) => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
     return async dispatch => {
         try
         {
@@ -61,6 +65,10 @@ export const likePost = (data) => {
 }
 
 export const commentPost = data => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
     return async dispatch => {
         try {
             const res = await axios.post("/api/post/comment", data);
@@ -73,12 +81,16 @@ export const commentPost = data => {
 }
 
 export const deletePost = id => {
+    if (localStorage.getItem('profile'))
+    {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`
+    }
     return async dispatch => {
         try {
             await axios.delete(`/api/post/delete/${id}`);
             const res = await axios.get("/api/timeline/posts");
             dispatch({ type: FETCH_ALL, payload: res.data });
-
+            
         } catch (e) {
             console.error(e.message);
         }

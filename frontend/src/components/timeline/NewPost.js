@@ -6,7 +6,7 @@ import { useDispatch, connect } from 'react-redux';
 
 
 const intialFormData = { title: "", description: "", contactInfo: "" }
-const NewPost = ({ authData }) => {
+const NewPost = ({ authData, scrollToPost }) => {
 
     const dispatch = useDispatch();
     const [formData, setFormData] = useState(intialFormData);
@@ -31,6 +31,7 @@ const NewPost = ({ authData }) => {
             e.target.reset();
             dispatch(upload(formData));
         }
+        // scrollToPost();
     }
     const renderForm = () => {
         return (

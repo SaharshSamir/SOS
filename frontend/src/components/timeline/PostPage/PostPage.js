@@ -63,7 +63,7 @@ const PostPage = (props) => {
                     <SendIcon fontSize="large"/>
                 </SendComment>
             </CommentInput>
-            <CommentSection />
+            <CommentSection user={user}/>
             <AuthDialog 
                 open={open}
                 onClose={handleClose}
