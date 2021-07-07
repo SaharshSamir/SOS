@@ -174,7 +174,6 @@ const deleteComment = async (req, res) => {
         });
         
         post.comments = updatedComments;
-        console.log(post);
 
         let newPost = await Post.findOneAndUpdate(
             {_id: postId},
