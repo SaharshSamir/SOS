@@ -12,7 +12,7 @@ const logIn = async (req, res) => {
         const existingUser = await User.findOne({ email });
         if (!existingUser) return res.status(404).json({ message: "No user with this email" })
 
-        const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
+        const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
         if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid password." });
 
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, jwtSecretKey, { expiresIn: "1h" });

@@ -16,6 +16,7 @@ const Timeline = (props) => {
     const [isDefault, setIsDefault] = useState(true);
     const [targetPosts, setTargetPosts] = useState([]);
     const postListRef = useRef(null);
+    const [showNewPost, setShowNewPost] = useState(true);
     useEffect(() => {
         // window.location.reload();
         dispatch(fetchPosts());
@@ -30,7 +31,14 @@ const Timeline = (props) => {
     }, [props]);
 
     const scrollToPost = () => postListRef.current.scrollIntoView();
+    useEffect(() => {
+        if(targetPosts.length !== 0){
+            setShowNewPost(false);
+        }else{
+            setShowNewPost(true);
 
+        }
+    }, [targetPosts])
 
     return (
         <ChangeDefault.Provider value={setTargetPosts}>
@@ -38,7 +46,7 @@ const Timeline = (props) => {
                 <Nav className="navv">
                     <Navbar bgColor="#D5F3C4" hoverColor="#b8d1a9" isSearch={true}/>
                 </Nav>
-                {user ? (<NewPost scrollToPost={scrollToPost}/>) : (<> </>)}
+                {(user && showNewPost)? (<NewPost scrollToPost={scrollToPost}/>) : (<> </>)}
                 <PostsList ref={postListRef} searchedPosts={targetPosts}/>
             </Container>
         </ChangeDefault.Provider>
